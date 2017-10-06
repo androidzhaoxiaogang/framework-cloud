@@ -16,9 +16,11 @@ spring:
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/zhangxd1989/spring-boot-cloud
-          search-paths: config-repo
+        native:
+          search-locations: classpath:/config-repo
+  profiles:
+       active: native
+
   rabbitmq:
     host: rabbitmq
 

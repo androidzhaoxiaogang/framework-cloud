@@ -13,4 +13,8 @@ spring:
         multiplier: 2
         max-attempts: 10
 
-
+uaa:
+  url: http://auth-service:5000/uaa
+  # Client ID on whose behalf the access_token will be verified by Resource Server
+  clientId: client
+  clientSecret: secret
