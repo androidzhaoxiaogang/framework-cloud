@@ -4,8 +4,12 @@ import com.google.common.base.Predicate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.OAuthBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -27,7 +31,7 @@ import static springfox.documentation.builders.PathSelectors.*;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfiguration {
+public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
     @Value("${uaa.clientId}")
     String clientId;
 
@@ -37,13 +41,23 @@ public class SwaggerConfiguration {
     @Value("${uaa.url}")
     String oAuthServerUri;
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars*")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+
     @Bean
     public Docket authApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("doc-api")
+                //.groupName("doc-api")
                 .apiInfo(apiInfo())
                 .select()
-                .paths(authPaths())
+                //.paths(authPaths())
+                .apis(RequestHandlerSelectors.basePackage("cn.cloud.auth.controller"))
+                .paths(PathSelectors.any())
                 .build()
                 .securitySchemes(Collections.singletonList(oauth()));
                 //.securityContexts(newArrayList(securityContext()));
@@ -82,7 +96,7 @@ public class SwaggerConfiguration {
         List<GrantType> grantTypes = new ArrayList<>();
         TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint(oAuthServerUri +
                 "/oauth/authorize", clientId, clientSecret);
-        TokenEndpoint tokenEndpoint = new TokenEndpoint(oAuthServerUri + "/oauth/token", "token");
+        TokenEndpoint tokenEndpoint = new TokenEndpoint(oAuthServerUri + "/oauth/token", "access_token");
         grantTypes.add(new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint));
         return grantTypes;
     }
