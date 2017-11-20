@@ -1,17 +1,15 @@
 package cn.cloud.auth.config;
 
-import com.google.common.base.Predicate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger.web.SecurityConfiguration;
@@ -21,9 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.google.common.base.Predicates.*;
 
-import static springfox.documentation.builders.PathSelectors.*;
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Created by Administrator on 2017/10/6.
@@ -31,7 +28,7 @@ import static springfox.documentation.builders.PathSelectors.*;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
+public class SwaggerConfiguration {
     @Value("${uaa.clientId}")
     String clientId;
 
@@ -40,14 +37,6 @@ public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
 
     @Value("${uaa.url}")
     String oAuthServerUri;
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars*")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
 
     @Bean
     public Docket authApi() {
@@ -59,8 +48,8 @@ public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
                 .apis(RequestHandlerSelectors.basePackage("cn.cloud.auth.controller"))
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(Collections.singletonList(oauth()));
-                //.securityContexts(newArrayList(securityContext()));
+                .securitySchemes(Collections.singletonList(oauth()))
+                .securityContexts(newArrayList(securityContext()));
     }
 
     private ApiInfo apiInfo() {
@@ -78,7 +67,7 @@ public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     SecurityScheme oauth() {
         return new OAuthBuilder()
-                .name("OAuth2")
+                .name("oauth2")
                 .scopes(scopes())
                 .grantTypes(grantTypes())
                 .build();
@@ -86,8 +75,8 @@ public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
 
     List<AuthorizationScope> scopes() {
         List<AuthorizationScope> list = new ArrayList();
-        list.add(new AuthorizationScope("read_scope","Grants read access"));
-        list.add(new AuthorizationScope("write_scope","Grants write access"));
+        list.add(new AuthorizationScope("read","Grants read access"));
+        list.add(new AuthorizationScope("write","Grants write access"));
 
         return list;
     }
@@ -101,32 +90,29 @@ public class SwaggerConfiguration extends WebMvcConfigurerAdapter {
         return grantTypes;
     }
 
-    private Predicate<String> authPaths() {
-        return or(
-                regex("/users/.*"),
-                regex("/api/user.*"),
-                regex("/api/store.*")
-        );
-    }
+    @Bean
+    SecurityContext securityContext() {
+        AuthorizationScope[] scopes = new AuthorizationScope[2];
+        scopes[0] = new AuthorizationScope( "read", "Grants read access" );
+        scopes[1] = new AuthorizationScope( "write", "Grants write access" );
 
-//    @Bean
-//    SecurityContext securityContext() {
-//        AuthorizationScope readScope = new AuthorizationScope("read:pets", "read your pets");
-//        AuthorizationScope[] scopes = new AuthorizationScope[1];
-//        scopes[0] = readScope;
-//        SecurityReference securityReference = SecurityReference.builder()
-//                .reference("petstore_auth")
-//                .scopes(scopes)
-//                .build();
-//
-//        return SecurityContext.builder()
-//                .securityReferences(newArrayList(securityReference))
-//                .forPaths(ant("/api/pet.*"))
-//                .build();
-//    }
+        SecurityReference securityReference = SecurityReference
+                .builder()
+                .reference("oauth2")
+                .scopes(scopes)
+                .build();
+
+
+        return SecurityContext
+                .builder()
+                .securityReferences(newArrayList(securityReference))
+                .forPaths(PathSelectors.any())
+                .build();
+    }
 
     @Bean
     public SecurityConfiguration securityInfo() {
-        return new SecurityConfiguration(clientId, clientSecret, "realm", clientId, "apiKey", ApiKeyVehicle.HEADER, "api_key", "");
+        return new SecurityConfiguration(clientId, clientSecret, "realm", clientId,
+                "apiKey", ApiKeyVehicle.HEADER, "api_key", ",");
     }
 }

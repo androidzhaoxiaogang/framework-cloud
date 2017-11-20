@@ -48,8 +48,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers("/swagger-ui.html")
+                //.antMatchers("/oauth/token")
+                //.antMatchers("/oauth/authorize")
                 .antMatchers("/swagger-resources/**")
                 .antMatchers("/v2/api-docs/**")
+                .antMatchers("/swagger-resources/configuration/security")
+                .antMatchers("/webjars/springfox-swagger-ui/**")
                 .antMatchers("/webjars/**");
     }
 }

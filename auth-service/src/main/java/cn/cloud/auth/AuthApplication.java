@@ -13,11 +13,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableDiscoveryClient
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 @MapperScan(basePackages = "cn.cloud.auth.mapper")
-@EnableWebMvc
-@ComponentScan(
-        {"cn.cloud.auth.config",
-        "cn.cloud.auth.service",
-        "cn.cloud.auth.controller"})
+//@EnableWebMvc
+//@ComponentScan(
+//        {"cn.cloud.auth.config",
+//        "cn.cloud.auth.service",
+//        "cn.cloud.auth.controller"})
 @EnableAutoConfiguration
 public class AuthApplication {
 

@@ -14,7 +14,11 @@ spring:
         max-attempts: 10
 
 uaa:
-  url: http://auth-service:5000/uaa
+  url: http://localhost:8060/uaa
   # Client ID on whose behalf the access_token will be verified by Resource Server
   clientId: client
   clientSecret: secret
+
+logging:
+    level:
+      org.springframework.security: TRACE

@@ -12,3 +12,9 @@ spring:
         max-interval: 10000
         multiplier: 2
         max-attempts: 10
+
+logging:
+    level:
+      oorg.springframework.security: TRACE
+
+
