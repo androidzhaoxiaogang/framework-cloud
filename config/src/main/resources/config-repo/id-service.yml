@@ -1,0 +1,28 @@
+server:
+  port: 8011
+
+name: id-service
+
+eureka:
+  instance:
+    metadata-map:
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+
+security:
+  user:
+    name: user
+    password: password
+  oauth2:
+    client:
+      clientId: svca-service
+      clientSecret: ${security.user.password}
+      accessTokenUri: http://${authserver.hostname}:${authserver.port}${authserver.contextPath}/oauth/token
+      grant-type: client_credentials
+      scope: server
+
+metadata:
+  worker: 1
+  datacenter: 1
+
+
