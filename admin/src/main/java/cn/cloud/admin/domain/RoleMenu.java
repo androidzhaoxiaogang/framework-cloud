@@ -1,10 +1,8 @@
 package cn.cloud.admin.domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Table(name = "role_menus")
 public class RoleMenu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

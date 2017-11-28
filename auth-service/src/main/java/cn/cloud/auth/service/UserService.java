@@ -5,8 +5,8 @@ import cn.cloud.auth.domain.User;
 
 public interface UserService {
 
-	void create(User user);
+	User create(User user);
 
-	User findOne(String username);
+	User findOne(long id);
 
 }

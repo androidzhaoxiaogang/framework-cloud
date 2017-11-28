@@ -24,6 +24,9 @@ zuul:
       path: /uaa/**
       stripPrefix: false
       sensitiveHeaders:
+    id-service:
+      path: /idgen/**
+      sensitiveHeaders:
     svca-service:
       path: /svca/**
       sensitiveHeaders:

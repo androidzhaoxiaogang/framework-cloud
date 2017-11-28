@@ -5,13 +5,22 @@ import javax.persistence.Table;
 
 @Table(name = "users")
 public class User {
-
 	@Id
+	private Long  id;
+
 	private String username;
 
 	private String password;
 
 	private boolean enabled;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public boolean isEnabled() {
 		return enabled;

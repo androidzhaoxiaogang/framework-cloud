@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,9 +26,9 @@ public class UserController {
         return principal;
     }
 
-    //@PreAuthorize("#oauth2.hasScope('server')")
+    @PreAuthorize("#oauth2.hasScope('server')")
     @PostMapping
-    public void createUser(@Valid @RequestBody User user) {
-        userService.create(user);
+    public User createUser(@Valid @RequestBody User user) {
+        return userService.create(user);
     }
 }

@@ -1,5 +1,6 @@
 package cn.cloud.auth.service;
 
+import cn.cloud.auth.client.IdServiceClient;
 import cn.cloud.auth.domain.User;
 import cn.cloud.auth.mapper.UserMapper;
 import org.slf4j.Logger;
@@ -17,24 +18,28 @@ public class UserServiceImpl implements UserService {
 	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
+	private IdServiceClient idServiceClient;
+
+	@Autowired
 	private UserMapper userMapper;
 
 	@Override
-	public void create(User user) {
+	public User create(User user) {
+		final long id = idServiceClient.getId();
+		final String pwd = encoder.encode(user.getPassword());
 
-		User existing = userMapper.selectOne(user);
-		Assert.isNull(existing, "user already exists: " + user.getUsername());
-
-		String hash = encoder.encode(user.getPassword());
-		user.setPassword(hash);
+		user.setId(id);
+		user.setPassword(pwd);
 
 		userMapper.insert(user);
 
-		log.info("new user has been created: {}", user.getUsername());
+		log.info("new user has been created: {}", id);
+
+		return user;
 	}
 
 	@Override
-	public User findOne(String username) {
-		return userMapper.selectByPrimaryKey(username);
+	public User findOne(long id) {
+		return userMapper.selectByPrimaryKey(id);
 	}
 }
