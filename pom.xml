@@ -26,7 +26,7 @@
         <module>svca-service</module>
         <module>svcb-service</module>
         <module>zipkin</module>
-        <module>admin</module>
+        <module>base-service</module>
         <module>id-service</module>
     </modules>
 

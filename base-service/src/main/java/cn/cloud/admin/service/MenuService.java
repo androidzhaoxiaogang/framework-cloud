@@ -2,12 +2,10 @@ package cn.cloud.admin.service;
 
 import cn.cloud.admin.domain.util.Tree;
 import cn.cloud.admin.domain.Menu;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
-@Service
 public interface MenuService {
 	Tree<Menu> getSysMenuTree(Long id);
 

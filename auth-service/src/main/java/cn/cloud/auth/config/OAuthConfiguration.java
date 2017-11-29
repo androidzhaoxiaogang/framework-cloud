@@ -73,6 +73,11 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
                 .secret("password")
                 .authorizedGrantTypes("refresh_token", "password")
                 .scopes("ui")
+                .and()
+                .withClient("base-service")
+                .secret("password")
+                .authorizedGrantTypes("client_credentials", "refresh_token")
+                .scopes("server")
         ;
 
     }

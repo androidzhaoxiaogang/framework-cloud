@@ -1,8 +1,6 @@
 server:
   port: 8010
 
-name: admin
-
 eureka:
   instance:
     metadata-map:
@@ -15,7 +13,7 @@ security:
     password: password
   oauth2:
     client:
-      clientId: admin-service
+      clientId: base-service
       clientSecret: ${security.user.password}
       accessTokenUri: http://${authserver.hostname}:${authserver.port}${authserver.contextPath}/oauth/token
       grant-type: client_credentials
