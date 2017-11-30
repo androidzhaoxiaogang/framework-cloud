@@ -20,8 +20,8 @@ public class MenuController {
     private MenuService menuService;
 
     @GetMapping(value = "/menus")
-    public List<Tree<Menu>> getInitMenuTree(Principal principal) {
-        return menuService.getMenuTree(Long.parseLong(principal.getName()));
+    public List<Tree<Menu>> getInitMenuTree() {
+        return menuService.getMenuTree(Long.parseLong("1161404351044"));
     }
 
 }

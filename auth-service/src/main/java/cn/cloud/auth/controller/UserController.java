@@ -14,14 +14,14 @@ import java.security.Principal;
 
 @Api(value="UserController", description = "用户模块", produces= MediaType.APPLICATION_JSON_VALUE)
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @ApiOperation("获取当前用户信息")
-    @GetMapping(value = "/current")
+    @GetMapping(value = "current")
     public Principal getUser(Principal principal) {
         return principal;
     }

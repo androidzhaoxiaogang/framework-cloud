@@ -35,6 +35,8 @@ authserver:
     contextPath: /uaa
 
 security:
+  basic:
+    enabled: false
   oauth2:
     resource:
       user-info-uri: http://${authserver.hostname}:${authserver.port}${authserver.contextPath}/current
