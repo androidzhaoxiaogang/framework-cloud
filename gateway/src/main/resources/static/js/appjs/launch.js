@@ -15,7 +15,7 @@ function requestOauthToken(username, password) {
         //     withCredentials: true
         // },
         // crossDomain: true,
-        headers: {'Authorization': 'Basic YnJvd3NlcjpwYXNzd29yZA==',
+        headers: {'Authorization': 'Basic YnJvd3NlcjpzZWNyZXQ=',
             "Content-type": "application/x-www-form-urlencoded; charset=utf-8"
         },
         // data: value,

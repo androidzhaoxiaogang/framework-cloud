@@ -1,6 +1,10 @@
 server:
   context-path: /uaa
   port: 5000
+  tomcat:
+    accept-count: 1000
+    max-threads: 1000
+    max-connections: 2000
 
 management:
   security:
@@ -23,7 +27,7 @@ spring:
 
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cloud_user?useUnicode=true&characterEncoding=utf8&autoReconnect=true&verifyServerCertificate=false&useSSL=false&requireSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/cloud_auth?useUnicode=true&characterEncoding=utf8&autoReconnect=true&verifyServerCertificate=false&useSSL=false&requireSSL=false&serverTimezone=UTC
     username: root
     password: password
     initialSize: 5
@@ -43,13 +47,20 @@ spring:
 
 mapper:
     mappers:
-        - cn.cloud.auth.util.MyMapper
+        - cn.cloud.auth.mapper.MyMapper
     not-empty: false
     identity: MYSQL
 
 mybatis:
     type-aliases-package: cn.cloud.auth.domain
     mapper-locations: classpath:mapper/*.xml
+
+flyway:
+  url: jdbc:mysql://localhost:3306/cloud_auth?&verifyServerCertificate=false&useSSL=false&requireSSL=false&serverTimezone=UTC
+  user: ${SERVICE_AUTH_DB_USER:root}
+  password: ${SERVICE_AUTH_DB_PASSWORD:password}
+  locations: classpath:db/migration
+  enabled: true
 
 logging:
     level:

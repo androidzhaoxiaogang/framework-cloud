@@ -2,13 +2,12 @@ package cn.cloud.auth.service;
 
 import cn.cloud.auth.client.IdServiceClient;
 import cn.cloud.auth.domain.User;
-import cn.cloud.auth.mapper.UserMapper;
+import cn.cloud.auth.dao.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 @Service
 public class UserServiceImpl implements UserService {

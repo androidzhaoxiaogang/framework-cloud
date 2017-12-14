@@ -1,4 +1,5 @@
 server:
+  context-path: /idgen
   port: 8011
 
 name: id-service

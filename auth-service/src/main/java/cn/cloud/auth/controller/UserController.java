@@ -21,13 +21,13 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation("获取当前用户信息")
-    @GetMapping(value = "current")
+    @RequestMapping(value = "current", method = RequestMethod.GET)
     public Principal getUser(Principal principal) {
         return principal;
     }
 
     @PreAuthorize("#oauth2.hasScope('server')")
-    @PostMapping
+    @RequestMapping(method = RequestMethod.POST)
     public User createUser(@Valid @RequestBody User user) {
         return userService.create(user);
     }

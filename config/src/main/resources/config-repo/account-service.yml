@@ -1,0 +1,75 @@
+server:
+  context-path: /accounts
+  port: 8010
+  version: ${info.project.version}
+
+#注册中心
+eureka:
+  instance:
+    metadata-map:
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+      version: ${info.project.version}
+
+security:
+  user:
+    name: user
+    password: password
+  oauth2:
+    client:
+      clientId: account-service
+      clientSecret: ${security.user.password}
+      accessTokenUri: http://${authserver.hostname}:${authserver.port}${authserver.contextPath}/oauth/token
+      grant-type: client_credentials
+      scope: server
+
+spring:
+  datasource:
+#    url: jdbc:h2:mem:user
+#    driver-class-name: org.h2.Driver
+#  jpa:
+#    show-sql: true
+
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud_admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&verifyServerCertificate=false&useSSL=false&requireSSL=false&serverTimezone=UTC
+    username: root
+    password: password
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+mapper:
+    mappers:
+        - cn.cloud.account.mapper.MyMapper
+    not-empty: false
+    identity: MYSQL
+
+mybatis:
+    type-aliases-package: cn.cloud.account.domain
+    mapper-locations: classpath:mapper/*.xml
+
+service:
+  client:
+    id: service-account
+    secret: service-account
+    authUri: http://localhost:5000/uaa
+
+logging:
+  level:
+    tk.mybatis: TRACE
+
+info:
+  project:
+    version: v1

@@ -7,16 +7,19 @@ eureka:
       defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@registry:8761/eureka/
 
 hystrix:
+  threadpool:
+    defualt:
+      coreSize: 500 #缺省为10
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 10000
+            timeoutInMilliseconds: 30000
 
 ribbon:
-  ReadTimeout: 5000
-  ConnectTimeout: 5000
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
 
 spring:
   rabbitmq:

@@ -1,7 +1,9 @@
 package cn.cloud.auth.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Table(name = "users")
 public class User {
@@ -13,6 +15,12 @@ public class User {
 	private String password;
 
 	private boolean enabled;
+
+	@Column(name = "created_at")
+	private Date createdAt;
+
+	@Column(name = "updated_at")
+	private Date updatedAt;
 
 	public Long getId() {
 		return id;
@@ -44,5 +52,21 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }

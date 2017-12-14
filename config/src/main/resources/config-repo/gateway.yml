@@ -1,38 +1,72 @@
 server:
   port: 8060
+  tomcat:
+    accept-count: 1000
+    max-threads: 1000
+    max-connections: 2000
 
 management:
   security:
     enabled: false
 
 hystrix:
+#  semaphore:
+#    max-semaphores: 3000
+#  threadpool:
+#    defualt:
+#      coreSize: 20 #缺省为10
+#      maximumSize: 500
+#      allowMaximumSizeToDivergeFromCoreSize: true
+#      maxQueueSize: 50000 #BlockingQueue的最大队列数
+#      queueSizeRejectionThreshold: 50000
+#    default:
+#      execution:
+#        timeout:
+#          enabled: true
+#        isolation:
+#          strategy: THREAD
+#          semaphore:
+#            maxConcurrentRequests: 1000
+#          thread:
+#            timeoutInMilliseconds: 30000
   command:
     default:
+      coreSize: 20 #缺省为10
+      maximumSize: 500
+      allowMaximumSizeToDivergeFromCoreSize: true
+      maxQueueSize: 50000 #BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 50000
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 20000
+            timeoutInMilliseconds: 30000
+          semaphore:
+            maxConcurrentRequests: 30000
 
 ribbon:
-  ReadTimeout: 10000
-  ConnectTimeout: 10000
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
 
 zuul:
+  semaphore:
+    maxSemaphores: 10000
+  host:
+    max-per-route-connections: 1000
+    max-total-connections: 1000
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
   ignoredServices: '*'
   routes:
     auth-service:
       path: /uaa/**
       stripPrefix: false
       sensitiveHeaders:
+    account-service:
+      path: /accounts/**
+      serviceId: account-service
+      stripPrefix: false
+      sensitiveHeaders:
     id-service:
       path: /idgen/**
       sensitiveHeaders:
-    svca-service:
-      path: /svca/**
-      sensitiveHeaders:
-    svcb-service:
-      path: /svcb/**
-      sensitiveHeaders:
-    base-service:
-      path: /base/**
-      sensitiveHeaders:
+

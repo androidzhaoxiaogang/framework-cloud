@@ -10,7 +10,7 @@ function getMenuTree() {
 
     if (token) {
         $.ajax({
-            url: 'base/menus',
+            url: 'accounts/menus',
             datatype: 'json',
             type: 'get',
             headers: {'Authorization': 'Bearer ' + token},

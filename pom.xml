@@ -23,10 +23,10 @@
         <module>gateway</module>
         <module>monitor</module>
         <module>auth-service</module>
+        <module>account-service</module>
         <module>svca-service</module>
         <module>svcb-service</module>
         <module>zipkin</module>
-        <module>base-service</module>
         <module>id-service</module>
     </modules>
 
